@@ -10,9 +10,7 @@ const getNotes = () => {
 
 const addNote = function (title, body) {
     const notes = loadNotes();
-    const duplicateNotes = notes.filter((note) => {
-        return note.title === title;
-    })
+    const duplicateNotes = notes.filter((note) => note.title === title)
 
     if(duplicateNotes.length === 0) {
         notes.push({
@@ -34,7 +32,7 @@ const saveNotes = function (notes) {
     fs.writeFileSync("notes.json", dataJSON)
 }
 
-const loadNotes = function () {
+const loadNotes = () => {
     try {
         const dataBuffer = fs.readFileSync("./notes.json");
         const dataJSON = JSON.parse(dataBuffer);
@@ -42,9 +40,21 @@ const loadNotes = function () {
     } catch (e) {
         return []
     }
-    
-} 
+}
 
+const removeNotes = (title) => {
+    const notes = loadNotes();
+    const notesToKeep = notes.filter((note) => note.title !== title)
+    saveNotes(notesToKeep);
+    
+    if(notesToKeep.length === notes.length){
+        console.log(chalk.bgRed("Sorry, no note with such title."))
+    } else {
+        console.log(chalk.bgGreen("Note deleted successfully."))
+    }
+}
+
+/*
 const removeNotes = function (title) {
     const notes = loadNotes();
     let noteIndex = "";
@@ -63,7 +73,7 @@ const removeNotes = function (title) {
         console.log(chalk.bgRed("Sorry, no note with such title."))
     }
 };
-
+*/
 
 module.exports = {
     getNotes: getNotes,
