@@ -1,18 +1,27 @@
-const { triggerAsyncId } = require("async_hooks");
 const fs = require("fs");
 const chalk = require('chalk');
-const { listeners } = require("process");
 
 
-const getNotes = () => {
-    return "Your notes..."
-};
-
-const addNote = function (title, body) {
+const readNote = (title) => {
     const notes = loadNotes();
-    const duplicateNotes = notes.filter((note) => note.title === title)
+    const selectedNote = notes.find((note) => note.title === title)
+    
+    if(selectedNote){
+        console.log("Your selected note is: ")
+        console.log("Title: ", chalk.cyan.italic.underline(selectedNote.title))
+        console.log("Body: ", chalk.yellow.italic(selectedNote.body))
+    } else {
+        console.log(chalk.bgRed.black("There is no note with such name."))
+    }
+}
 
-    if(duplicateNotes.length === 0) {
+
+const addNote = (title, body) => {
+    const notes = loadNotes();
+    // const duplicateNotes = notes.filter((note) => note.title === title)
+    const duplicateNote = notes.find((note) => note.title === title)
+
+    if(!duplicateNote) {
         notes.push({
             title: title,
             body: body
@@ -27,7 +36,13 @@ const addNote = function (title, body) {
     
 }
 
-const saveNotes = function (notes) {
+const listNotes = () => {
+    console.log(chalk.bgGreen("Your Notes:"));
+    const notes = loadNotes();
+    notes.forEach((note) => console.log("- ", note.title));
+}
+
+const saveNotes = (notes) => {
     const dataJSON = JSON.stringify(notes)
     fs.writeFileSync("notes.json", dataJSON)
 }
@@ -54,29 +69,10 @@ const removeNotes = (title) => {
     }
 }
 
-/*
-const removeNotes = function (title) {
-    const notes = loadNotes();
-    let noteIndex = "";
-    notes.filter((note) => {
-        if(note.title === title){
-            noteIndex = notes.indexOf(note);
-            return notes.indexOf(note);
-        }
-    })
-    if (noteIndex !== "") {
-        console.log(chalk.bgGreen(`"${notes[noteIndex].title}" has been removed.`))
-        notes.splice(noteIndex, 1);
-        saveNotes(notes)
-        
-    } else {
-        console.log(chalk.bgRed("Sorry, no note with such title."))
-    }
-};
-*/
 
 module.exports = {
-    getNotes: getNotes,
     addNote: addNote,
-    removeNotes: removeNotes
+    removeNotes: removeNotes,
+    listNotes: listNotes,
+    readNote: readNote
 }

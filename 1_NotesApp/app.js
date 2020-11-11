@@ -42,23 +42,23 @@ yargs.command({
 // Create List command
 yargs.command({
     command: 'list',
-    describe: 'List a note',
-    handler() {console.log('Listing out all note!')}
+    describe: 'List all the notes',
+    handler() {notes.listNotes()}
 })
 
 // Create Read command
 yargs.command({
     command: 'read',
     describe: 'Read a note',
-    handler() {console.log('Reading the note!')}
+    builder: {
+        title: {
+            decribe: "title",
+            demandOption: true,
+            type: "strign"
+        }
+    },
+    handler(argv) {notes.readNote(argv.title)}
 })
 
-
-// add, remove, read, list
-
-//const command = process.argv[2];
-
-// console.log(process.argv);
-// console.log(yargs.argv);
 
 yargs.parse()
