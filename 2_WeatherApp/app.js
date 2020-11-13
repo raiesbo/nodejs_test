@@ -1,30 +1,24 @@
 const geocode = require("./utils/geocode");
 const forecast = require("./utils/forecast");
 
-const address = "altea"
+const address = process.argv[2]
 
-geocode(address, (error, data) => {
-    if (error) {
-        console.log("Error: ", error)
-        console.log("Data: ",data)
-    } else {
-        console.log("Error: ", error)
-        console.log("Data: ",data)
-
-        forecast( data.latitude, data.longitude, (error, data) => {
-            console.log("Error: ", error)
-            console.log("Data: ", data)
+if(!address){
+    return console.log("No location provided.")
+} else {
+    geocode(address, (error, { latitude, longitude, location } = {}) => {
+        if (error) {
+            return console.log("Error: ", error)
+        }
+    
+        forecast( latitude, longitude, (error, forecastData) => {
+            if(error) {
+                return console.log("Error: ", error)
+            }
+    
+            console.log(location)
+            console.log(forecastData)
+    
         })
-
-    }
-});
-
-/*
-const lat = 38.6;
-const lon = -0.04889;
-
-forecast( lat, lon, (error, data) => {
-    console.log("Error: ", error)
-    console.log("Data: ", data)
-})
-*/
+    });
+}
