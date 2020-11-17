@@ -6,15 +6,28 @@
         <title>Weather Node App</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="/img/cloud.png">
         <link rel="stylesheet" href="./css/styles.css">
     </head>
     <body>
-        {{>header}}
 
+        <div class="main-content">
+            {{>header}}
+            <p>Use this site to get your weather.</p>
 
+            <form>
+                <input placeholder="Location">
+                <button>Search</button>
+            </form>
+
+            <p class="location"></p>
+            <P class="forecast"></P>
+        </div>
+
+        
 
         {{>footer}}
         
-        <script src="" async defer></script>
+        <script src="./js/app.js" async defer></script>
     </body>
 </html>
