@@ -1,16 +1,9 @@
 // CRUD create red update delete
-
-// const mongodb = require("mongodb");
-// const MongoClient = mongodb.MongoClient
-// const ObjectID = mongodb.ObjectID
+const ObjectID = mongodb.ObjectID
+const mongoose = require("mongoose")
 
 const { MongoClient, ObjectID, ObjectId } = require("mongodb");
 
-/*
-const id = new ObjectID()
-console.log(id)
-console.log(id.getTimestamp())
-*/
 
 const connectionURL = "mongodb://127.0.0.1:27017"
 const databaseName = "task-manager"
@@ -22,17 +15,8 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
 
     const db = client.db(databaseName)
 
-    const updatePromise = db.collection("users").updateOne({
-        _id: new ObjectID("5fb79a61cd49582dc85ce149")
-    }, {
-        $set: {
-            name: "Johny"
-        }
-    })
 
-    updatePromise.then((result) => {
-        console.log(result)
-    }).catch((error) => {
-        console.log(error)
-    })
+       db.collection("tasks").deleteOne({ _id: new ObjectID("5fb7a7963a705f2cc8ded2eb")})
+        .then(result => console.log(result.deletedCount))
+        .catch(error => console.log(error))
 })
